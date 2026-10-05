@@ -1,0 +1,18 @@
+{
+  "firstName": "First",
+  "lastName": "Last",
+  "email": "you@example.com",
+  "phone": { "countryCode": "+91", "country": "India", "number": "9999999999" },
+  "location": { "city": "Your City", "state": "Your State", "country": "India" },
+  "links": { "linkedin": "", "github": "", "portfolio": "" },
+  "current": { "company": "", "title": "", "yearsExperience": 0 },
+  "education": { "degree": "", "college": "", "year": 0, "cgpa": "" },
+  "noticePeriodDays": null,
+  "currentCtcLpa": null,
+  "expectedCtcLpa": null,
+  "workAuthorization": { "india": true, "needsSponsorshipAbroad": null },
+  "willingToRelocate": null,
+  "eeo": "ask",
+  "baseResume": "/abs/path/to/resume.pdf",
+  "tailoredResumesDir": "/abs/path/to/applications"
+}

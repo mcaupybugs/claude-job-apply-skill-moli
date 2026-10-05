@@ -1,0 +1,17 @@
+{
+  "sessionId": "eightfold-1234567890",
+  "sessionDir": "./runs/eightfold-1234567890",
+  "url": "https://app.eightfold.ai/careers/apply?pid=<JOB_ID>&domain=<COMPANY_DOMAIN>",
+  "waitFor": "#Contact_Information_email",
+  "resume": { "path": "/abs/path/to/resume.pdf", "confirmSelector": "#confirmUploadResume" },
+  "fields": [
+    { "selector": "#Contact_Information_email", "kind": "text", "value": "you@example.com" },
+    { "selector": "#Contact_Information_firstname", "kind": "text", "value": "First" },
+    { "selector": "#Contact_Information_lastname", "kind": "text", "value": "Last" },
+    { "label": "Country code", "kind": "combo", "query": "India", "match": "(+91)" },
+    { "selector": "#Contact_Information_phone", "kind": "text", "value": "9999999999" },
+    { "label": "Country", "kind": "combo", "value": "India" },
+    { "selector": "#Contact_Information_city", "kind": "text", "value": "Your City" }
+  ],
+  "submitText": "Submit application"
+}

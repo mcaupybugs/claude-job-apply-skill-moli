@@ -1,0 +1,10 @@
+node_modules/
+runs/
+profile.json
+plan.json
+*.pdf
+*.docx
+*.png
+*.xlsx
+.env
+.DS_Store
