@@ -1,0 +1,42 @@
+{
+  "_comment": "Starter list. Every entry was verified to return jobs from its public ATS API (Oct 2026). Add your own targets: greenhouse/lever/ashby need the board slug (from the careers URL), eightfold needs host + company domain. Find a company's ATS by opening its careers page and looking at the apply link host.",
+  "companies": [
+    { "name": "Razorpay", "ats": "greenhouse", "slug": "razorpaysoftwareprivatelimited" },
+    { "name": "Groww", "ats": "greenhouse", "slug": "groww" },
+    { "name": "Databricks", "ats": "greenhouse", "slug": "databricks" },
+    { "name": "Stripe", "ats": "greenhouse", "slug": "stripe" },
+    { "name": "MongoDB", "ats": "greenhouse", "slug": "mongodb" },
+    { "name": "Elastic", "ats": "greenhouse", "slug": "elastic" },
+    { "name": "Rubrik", "ats": "greenhouse", "slug": "rubrik" },
+    { "name": "Coinbase", "ats": "greenhouse", "slug": "coinbase" },
+    { "name": "Airbnb", "ats": "greenhouse", "slug": "airbnb" },
+    { "name": "Datadog", "ats": "greenhouse", "slug": "datadog" },
+    { "name": "Twilio", "ats": "greenhouse", "slug": "twilio" },
+    { "name": "Okta", "ats": "greenhouse", "slug": "okta" },
+    { "name": "Zscaler", "ats": "greenhouse", "slug": "zscaler" },
+    { "name": "Druva", "ats": "greenhouse", "slug": "druva" },
+    { "name": "InMobi", "ats": "greenhouse", "slug": "inmobi" },
+    { "name": "GitLab", "ats": "greenhouse", "slug": "gitlab" },
+    { "name": "Cloudflare", "ats": "greenhouse", "slug": "cloudflare" },
+
+    { "name": "CRED", "ats": "lever", "slug": "cred" },
+    { "name": "Meesho", "ats": "lever", "slug": "meesho" },
+    { "name": "Paytm", "ats": "lever", "slug": "paytm" },
+    { "name": "Zeta", "ats": "lever", "slug": "zeta" },
+    { "name": "Mindtickle", "ats": "lever", "slug": "mindtickle" },
+    { "name": "FamPay", "ats": "lever", "slug": "fampay" },
+
+    { "name": "OpenAI", "ats": "ashby", "slug": "openai" },
+    { "name": "Ramp", "ats": "ashby", "slug": "ramp" },
+    { "name": "Cursor", "ats": "ashby", "slug": "cursor" },
+    { "name": "Sarvam AI", "ats": "ashby", "slug": "sarvam" },
+    { "name": "Supabase", "ats": "ashby", "slug": "supabase" },
+    { "name": "Plane", "ats": "ashby", "slug": "plane" },
+    { "name": "Notion", "ats": "ashby", "slug": "notion" },
+
+    { "name": "Microsoft", "ats": "eightfold", "host": "apply.careers.microsoft.com", "domain": "microsoft.com", "locationQuery": "India" },
+    { "name": "PayPal", "ats": "eightfold", "host": "paypal.eightfold.ai", "domain": "paypal.com", "locationQuery": "India" },
+    { "name": "Eightfold", "ats": "eightfold", "host": "app.eightfold.ai", "domain": "volkscience.com", "locationQuery": "India" },
+    { "name": "Dexcom", "ats": "eightfold", "host": "careers.dexcom.com", "domain": "dexcom.com", "locationQuery": "India" }
+  ]
+}

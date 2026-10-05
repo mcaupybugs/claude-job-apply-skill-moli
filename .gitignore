@@ -8,3 +8,6 @@ plan.json
 *.xlsx
 .env
 .DS_Store
+job_tracker.csv
+job-search/
+*.csv

@@ -1,77 +1,103 @@
 # claude-job-apply-skill-moli
 
-A [Claude Code](https://claude.com/claude-code) skill that fills and submits job applications on
-company career pages / ATS forms using the [Moli](https://github.com/lexmount/moli) headless
-browser — and **always stops for your confirmation before submitting**.
+A [Claude Code](https://claude.com/claude-code) skill for the whole job hunt: it learns your profile from
+your resume, **searches** company job boards and Indian job sites, **scores** how well you fit each role,
+writes a **tailored resume + cover letter** per job, then **fills the application form** in the
+[Moli](https://github.com/lexmount/moli) headless browser — and submits only when you type "submit".
 
-It's designed as the "last mile" for a job-search skill (finding jobs, scoring fit, tailoring
-resumes): this skill takes a job URL, opens the application form in Moli, fills it from your
-profile, uploads your (tailored) resume, shows you a screenshot, and submits only when you say so.
+> **Status: experimental.** Search works across Greenhouse, Lever, Ashby and Eightfold. Form filling is
+> verified end-to-end on Eightfold; other ATS forms have notes but need real-world testing. Issues/PRs welcome.
+
+## Why
+
+Applying is mostly retyping the same name, email, phone and resume into a different form on every
+career page. This automates the boring part and keeps you in charge of the decisions.
 
 ## What it does
 
-1. **Inspect** the apply form — every field, label, required flag, dropdown options, captcha presence.
-2. **Fill** it from your profile (`profile.json`) via a per-job `plan.json` — resume first (most ATSs
-   parse it and prefill), then contact fields, dropdowns, checkboxes. Never submits.
-3. **Review** — screenshot + field table for you to check.
-4. **Submit** only after an explicit "submit" for that job; detects the success page.
-5. **Track** — marks the job as Applied in your job tracker spreadsheet.
+```
+you: find backend roles in Bangalore/Hyderabad, last 2 weeks
+ → searches 30+ company job boards (+ Naukri/LinkedIn/etc. via web search)
+ → scores each job against your resume (skills, YOE, domain, seniority…) with a one-line why
+ → writes a tailored resume + cover letter per job
+ → table: role · company · fit % · posted · apply link · "auto-fill ✅ / manual ⚠️"
+you: fill 1, 3, 4
+ → opens each form in Moli, uploads the right resume, fills fields, screenshots
+ → asks you anything it doesn't know (salary, notice period, visa…)
+you: submit 1, 4
+ → submits those two, confirms the success page, updates job_tracker.csv
+```
 
-Batch mode: fill several jobs, then approve each one individually ("submit 1, 3; skip 2").
+Also: `status` (reads application replies from Gmail if connected, else asks you), `automate`
+(nightly search + morning report — never submits), `review` (weekly stats + what to change).
 
-## Safety rules built into the skill
+## Safety rules (built into the skill)
 
-- Every submission needs explicit per-job confirmation; unattended runs never submit.
-- No CAPTCHA bypassing — visible challenges are handed back to you.
-- No account creation, logins, or passwords (e.g. Workday sign-up → handed back to you).
-- Never invents answers (salary, visa, notice period, EEO questions, "why us") — it asks you.
-- Never adds skills/experience that aren't on your resume.
-
-## Requirements
-
-- Claude Code
-- [Moli](https://github.com/lexmount/moli):
-  ```bash
-  curl --proto '=https' --tlsv1.2 -fsSL https://github.com/lexmount/moli/releases/latest/download/moli-installer.sh | sh
-  ```
-- Node.js 18+ (scripts use `playwright-core` connected to Moli over CDP — no Chromium download needed)
+- Nothing is submitted without an explicit "submit" for **that** job. Scheduled runs never submit.
+- Never lies on a resume, never invents form answers — it asks you.
+- No CAPTCHA solving, no account creation, no passwords. Workday-style sign-up forms are handed back to you
+  with the materials ready.
+- Your profile, resumes and tracker live in a local workspace folder and never leave your machine except
+  into the forms you approve.
 
 ## Install
 
+1. [Moli](https://github.com/lexmount/moli):
+   ```bash
+   curl --proto '=https' --tlsv1.2 -fsSL https://github.com/lexmount/moli/releases/latest/download/moli-installer.sh | sh
+   ```
+2. The skill (Node.js 18+):
+   ```bash
+   git clone https://github.com/mcaupybugs/claude-job-apply-skill-moli.git ~/.claude/skills/moli-job-apply
+   cd ~/.claude/skills/moli-job-apply/scripts && npm install
+   ```
+3. In Claude Code: *"/moli-job-apply setup"* (give it your resume), then *"find me jobs"* or
+   *"apply to this: &lt;url&gt;"*.
+
+## Scripts (usable without Claude)
+
 ```bash
-git clone https://github.com/mcaupybugs/claude-job-apply-skill-moli.git ~/.claude/skills/moli-job-apply
-cd ~/.claude/skills/moli-job-apply/scripts && npm install
+cd scripts
+node search.mjs --keywords "backend,platform" --locations "bengaluru,india,remote" --days 14 --out ../runs/s.json
+node verify.mjs <job-url> ...                     # is this posting still live? (Moli-rendered)
+moli serve --layout --port 9333 &                 # needed for the form scripts
+node inspect.mjs "<apply-url>" ../runs/x          # list form fields (read-only)
+node fill.mjs ../runs/x/plan.json                 # fill + screenshot, does NOT submit
+node submit.mjs ../runs/x/plan.json               # submit after you've reviewed
+node track.mjs stats --tracker job_tracker.csv
 ```
 
-Then in Claude Code: *"apply to this job: &lt;url&gt;"*.
-
-Create your `profile.json` from `profile.example.json` (or let the skill build it from your resume).
-`profile.json`, resumes, and `runs/` are git-ignored.
-
-## Using the scripts directly
-
-```bash
-moli serve --layout --port 9333 &                 # --layout enables screenshots
-node scripts/inspect.mjs "<apply-url>" ./runs/x   # list fields (read-only)
-node scripts/fill.mjs ./runs/x/plan.json          # fill + screenshot, does NOT submit
-node scripts/submit.mjs ./runs/x/plan.json        # submit (only after you've reviewed)
-```
-
-Set `MOLI_CDP` to use a different endpoint. See `plan.example.json` for the plan format.
+`data/companies.json` is a verified starter list (Razorpay, Groww, Databricks, Stripe, CRED, Meesho, Paytm,
+OpenAI, Sarvam, Microsoft, PayPal, …). Add your own targets — `references/search.md` shows how to find a
+company's ATS slug in a minute.
 
 ## Supported ATSs
 
-| ATS | Status |
-|---|---|
-| Eightfold | ✅ verified end-to-end |
-| Greenhouse, Lever, Ashby, SmartRecruiters | notes only — inspect first, PRs welcome |
-| Workday, iCIMS, Taleo | usually require an account → handed back to you |
+| ATS | Search | Form filling |
+|---|---|---|
+| Eightfold | ✅ | ✅ verified |
+| Greenhouse | ✅ | notes, untested |
+| Lever | ✅ | notes, untested (hCaptcha common) |
+| Ashby | ✅ | notes, untested |
+| Workday / iCIMS / Taleo | via web search only | handed to you (needs an account) |
+| Naukri / LinkedIn / Instahyre … | via web search | handed to you (login) |
 
-`references/ats-notes.md` has per-ATS selectors and gotchas; `references/moli-playbook.md`
-documents Moli-specific quirks (elements reported hidden, unpainted modals, React comboboxes,
-overlays intercepting clicks) and their fixes. If you get a new ATS working, please add a section.
+## Layout
+
+```
+SKILL.md                     the skill (persona, workflow, rules)
+references/                  search method + fit rubric, resume/cover-letter rules,
+                             tracking/status/automation, Moli quirks, per-ATS notes
+scripts/                     search, verify, inspect, fill, submit, track (+ lib)
+data/companies.json          starter company → ATS list
+profile.example.json         profile template      plan.example.json   form plan template
+```
 
 ## Disclaimer
 
-You're responsible for what gets submitted in your name and for following each site's terms of
-use. Review every application before confirming.
+You're responsible for what's submitted in your name and for each site's terms of use. Review every
+application before confirming.
+
+## License
+
+MIT

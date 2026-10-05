@@ -5,6 +5,11 @@ Others = starting points from public form structure; verify with `inspect.mjs` b
 
 ## Eightfold (`app.eightfold.ai/careers…`, `*.eightfold.ai`) — VERIFIED
 
+- Search API (no auth, used by search.mjs): `https://<host>/api/pcsx/search?domain=<domain>&query=<q>&location=<loc>&start=<n>`
+  → `data.positions[]` (`id, name, locations, postedTs, department, workLocationOption, positionUrl`), 10 per page, `data.count`.
+  Details: `/api/pcsx/position_details?position_id=<id>&domain=<domain>&hl=en`. Some hosts rate-limit (429).
+  Verified hosts: app.eightfold.ai (domain volkscience.com), apply.careers.microsoft.com (microsoft.com),
+  paypal.eightfold.ai (paypal.com), careers.dexcom.com (dexcom.com).
 - Job page: `/careers/job/<pid>?domain=<domain>`. The listing URL with `pid=` can render "0 jobs" — use the job page.
 - Apply form: `/careers/apply?pid=<pid>&domain=<domain>`. Single page, two sections (Resume, Contact Information).
 - Wait for `#Contact_Information_email` with `state: 'attached'`.

@@ -6,13 +6,29 @@
   "location": { "city": "Your City", "state": "Your State", "country": "India" },
   "links": { "linkedin": "", "github": "", "portfolio": "" },
   "current": { "company": "", "title": "", "yearsExperience": 0 },
-  "education": { "degree": "", "college": "", "year": 0, "cgpa": "" },
+  "education": { "degree": "", "college": "", "year": 0, "cgpa": "", "gate": "" },
+  "skills": [],
   "noticePeriodDays": null,
   "currentCtcLpa": null,
   "expectedCtcLpa": null,
   "workAuthorization": { "india": true, "needsSponsorshipAbroad": null },
   "willingToRelocate": null,
   "eeo": "ask",
+
+  "targets": {
+    "roles": ["Backend Engineer", "Platform Engineer"],
+    "keywords": ["backend", "platform", "distributed", "infrastructure"],
+    "excludeTitleWords": ["intern", "director"],
+    "seniority": "Senior (5-8 yrs)",
+    "cities": ["Bengaluru", "Bangalore", "Hyderabad", "Remote"],
+    "abroad": { "interested": false, "countries": [] },
+    "companyTypes": ["product", "startup", "MNC"],
+    "prioritizeCompanies": [],
+    "skipCompanies": [],
+    "dealBreakers": [],
+    "postedWithinDays": 14
+  },
+
   "baseResume": "/abs/path/to/resume.pdf",
-  "tailoredResumesDir": "/abs/path/to/applications"
+  "workspace": "/abs/path/to/job-search"
 }
